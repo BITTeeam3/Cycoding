@@ -116,6 +116,10 @@
 							<li class="nav-item dropdown"><a
 								href="${pageContext.request.contextPath}/board/list"
 								class="nav-link"> COMMUNITY </a></li>
+
+							<li class="nav-item dropdown"><a
+								href="${pageContext.request.contextPath}/notice/list"
+								class="nav-link"> NOTICE </a></li>
 						</ul>
 
 						<!-- Header Right -->
