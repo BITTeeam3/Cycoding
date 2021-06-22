@@ -44,6 +44,28 @@ header{
 	border: none;
 	background-color: #FFFFFF;
 }
+
+.boardContent {
+	border: none;
+    background-color: #fff;
+}
+
+.boardBtn {
+	font-weight: 300 !important;
+    font-size: 14px !important;
+    border-radius: 3px !important;
+    padding: 7px !important;
+    margin-top: 20px !important;
+    margin-bottom: 20px !important;
+}
+
+#replyHr{
+    margin: 1rem 0;
+    color: #C0A9BD;
+    background-color: currentColor;
+    border: 0.5px solid !important;
+    opacity: 1;
+}
 </style>
 
 <script type="text/javascript">
@@ -331,7 +353,7 @@ function fn_replyReplySave(){
 	</header>			
 	<hr/>
 	<div class="form-group">
-		<textarea class="form-control" cols="120" rows="15" readonly="readonly" disabled><c:out value="${boardInfo.FREE_CONTENT}" escapeXml="false"/></textarea>
+		<textarea class="form-control boardContent" cols="120" rows="15" readonly="readonly" disabled><c:out value="${boardInfo.FREE_CONTENT}" escapeXml="false"/></textarea>
 	</div>	
 	<br/>
 	<div class="form-group" style="margin-bottom:10px">
@@ -354,7 +376,7 @@ function fn_replyReplySave(){
 				<textarea name="REPLY_CONTENT" class="form-control" rows="3" cols="120" onKeyUp="javascript:fnChkByte(this,'80')" placeholder="댓글을 작성해주세요."></textarea>
 				<span id="byteInfo">0</span>/ 80byte
 				<div class="text-right">
-					<button type="button" onclick="fn_formSubmit()" class="btn btn-outline-primary text-right">저장</button>
+					<button type="button" onclick="fn_formSubmit()" class="btn btn-outline-primary text-right boardBtn">저장</button>
 				</div>
 				</div>
 			</form>
@@ -407,8 +429,8 @@ function fn_replyReplySave(){
 				<input type="hidden" name="REPLY_ID"> 
 				<textarea name="REPLY_CONTENT" class="form-control" rows="3" cols="120" onKeyUp="javascript:fnChkByte1(this,'80')" placeholder="수정할 댓글을 작성해주세요."></textarea>
 				<span id="byteInfo1">0</span>/ 80byte
-				<button onclick="fn_replyUpdateSave()" class="btn btn-outline-primary text-right">저장</button>
-				<button type="button" onclick="fn_replyUpdateCancel()" class="btn btn-default text-right">취소</button>
+				<button onclick="fn_replyUpdateSave()" class="btn btn-outline-primary text-right boardBtn">저장</button>
+				<button type="button" onclick="fn_replyUpdateCancel()" class="btn btn-default text-right boardBtn">취소</button>
 			</form>
 				
 		</div>
@@ -422,20 +444,20 @@ function fn_replyReplySave(){
 				<input type="hidden" name="MEMBER_ID" value="${sessionScope.member_id}">
 				<textarea name="REPLY_CONTENT" class="form-control" rows="3" cols="120" onKeyUp="javascript:fnChkByte2(this,'80')" placeholder="댓글을 작성해주세요."></textarea>
 				<span id="byteInfo2">0</span>/ 80byte
-				<button onclick="fn_replyReplySave()" class="btn btn-outline-primary text-right">저장</button>
-				<button type="button" onclick="fn_replyReplyCancel()" class="btn btn-default text-right">취소</button>
+				<button onclick="fn_replyReplySave()" class="btn btn-outline-primary text-right boardBtn">저장</button>
+				<button type="button" onclick="fn_replyReplyCancel()" class="btn btn-default text-right boardBtn">취소</button>
 			</form>
 		</div>
 		<br/>
 </div>
 <div class="container text-right" style="margin-bottom:30px">
 	<c:if test="${sessionScope.nickname eq boardInfo.MEMBER_NICKNAME}">
-			<a href="form?FREE_ID=<c:out value="${boardInfo.FREE_ID}"/>" class="btn btn-outline-primary">수정</a>
-	        <a href="delete?FREE_ID=<c:out value="${boardInfo.FREE_ID}"/>" class="btn btn-outline-black">삭제</a>
-	        <a href="list" class="btn btn-outline-black">취소</a>
+			<a href="form?FREE_ID=<c:out value="${boardInfo.FREE_ID}"/>" class="btn btn-outline-primary boardBtn">수정</a>
+	        <a href="delete?FREE_ID=<c:out value="${boardInfo.FREE_ID}"/>" class="btn btn-outline-black boardBtn">삭제</a>
+	        <a href="list" class="btn btn-outline-black boardBtn">취소</a>
 	 </c:if>
 	 <c:if test="${sessionScope.nickname ne boardInfo.MEMBER_NICKNAME}">
-			<a href="list" class="btn btn-outline-black">취소</a>
+			<a href="list" class="btn btn-outline-black boardBtn">취소</a>
 	</c:if>		
 </div>
 </body>

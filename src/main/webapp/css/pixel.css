@@ -433,13 +433,7 @@ body {
 [tabindex="-1"]:focus:not(:focus-visible) {
     outline: 0 !important;
 }
-#replyHr{
-    margin: 1rem 0;
-    color: #C0A9BD;
-    background-color: currentColor;
-    border: solid;
-    opacity: 1;
-}
+
 hr {
     margin: 1rem 0;
     color: #C0A9BD;

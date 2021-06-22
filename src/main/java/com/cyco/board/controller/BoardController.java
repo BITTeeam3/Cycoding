@@ -32,7 +32,6 @@ public class BoardController {
     @RequestMapping(value = "list")
    	public String boardList(SearchVO searchVO, ModelMap modelMap) throws Exception {
 //    	페이징 호출1(컨트롤러에서 호출하고 JSP에서 호출)
-    	System.out.println("게시판 리스트");
     	searchVO.pageCalculate( boardSvc.selectBoardCount(searchVO) ); 
 
     	List<?> listview   = boardSvc.selectBoardList(searchVO);
@@ -44,7 +43,6 @@ public class BoardController {
 //	글쓰기 + 글수정 + 파일삭제 양식
 	@RequestMapping(value = "/form")
    	public String boardForm(HttpServletRequest request, ModelMap modelMap) throws Exception {
-		System.out.println("게시판 등록폼 호출");
     	String FREE_ID = request.getParameter("FREE_ID");
     	if (FREE_ID!=null) {
     		BoardVo boardInfo = boardSvc.selectBoardOne(FREE_ID);
@@ -61,7 +59,6 @@ public class BoardController {
 	 @RequestMapping(value = "/save")
 	   	public String boardSave(HttpServletRequest request, BoardVo boardInfo) throws Exception {
 	    	String[] fileno = request.getParameterValues("fileno");
-	    	System.out.println("게시판 등록");
 	    	FileUtil fs = new FileUtil();
 			List<FileVO> filelist = fs.saveAllFiles(boardInfo.getUploadfile());
 
@@ -151,7 +148,6 @@ public class BoardController {
 //    댓글 저장
     @RequestMapping(value = "/replysave")
     public String boardReplySave(HttpServletRequest request, BoardReplyVo boardReplyInfo) {
-    	System.out.println("댓글 저장");
         boardSvc.insertBoardReply(boardReplyInfo);
 
         return "redirect:read?FREE_ID=" + boardReplyInfo.getFREE_ID();
@@ -160,7 +156,6 @@ public class BoardController {
 //    댓글 삭제
     @RequestMapping(value = "/replydelete")
     public String boardReplyDelete(HttpServletRequest request, BoardReplyVo boardReplyInfo) {
-    	System.out.println("댓글 삭제");
     	boardSvc.deleteBoardReply(boardReplyInfo.getREPLY_ID());
 
         return "redirect:read?FREE_ID=" + boardReplyInfo.getFREE_ID();

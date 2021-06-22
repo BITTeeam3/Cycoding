@@ -29,6 +29,36 @@ table {
     background-position: center;
     margin-bottom: 50px;
 }
+.chkselect{
+	font-size: 16px;
+    font-weight: 500;
+}
+
+input {
+	padding: 0 5px;
+}
+
+input::placeholder {
+	font-size: 14px
+}
+
+.boardBtn {
+	font-weight: 300 !important;
+    font-size: 14px !important;
+    border-radius: 3px !important;
+    padding: 7px !important;
+    margin-top: 20px !important;
+    margin-bottom: 20px !important;
+}
+
+table {
+	border-top: 0.5px solid #d9d9d9;
+    border-bottom: 0.5px solid #d9d9d9;
+}
+
+thead {
+	border-bottom: 0.5px solid #d9d9d9 !important;
+}
 </style>
 <script>
 // 페이징
@@ -55,6 +85,14 @@ function checkOnlyOne(element) {
 <br/>
 <div class="container">
 <div class="section-header"></div>
+<form id="form1" name="form1"  method="post">
+<div class="form-group" style="margin-bottom:30px;">
+			<input type="checkbox" name="searchType" onclick="checkOnlyOne(this)" value="FREE_TITLE" <c:if test="${fn:indexOf(searchVO.searchType, 'FREE_TITLE')!=-1}">checked="checked"</c:if>/>
+			<label class="chkselect" for="searchType1">제목</label>
+			<input type="checkbox" name="searchType" onclick="checkOnlyOne(this)" value="FREE_CONTENT" <c:if test="${fn:indexOf(searchVO.searchType, 'FREE_CONTENT')!=-1}">checked="checked"</c:if>/>
+			<label class="chkselect" for="searchType2">내용</label>
+			<input type="text" name="searchKeyword" style="width:200px;" maxlength="50" placeholder="검색" value='<c:out value="${searchVO.searchKeyword}"/>' onkeydown="if(event.keyCode == 13) { fn_formSubmit();}"><button  name="btn_search" style="border:none; color:white; background:#CA8FAB; height:30px;" class="btn_sch input-group-addon" type="button" onclick="fn_formSubmit()"><span class="fas fa-search"></span></button>
+		</div>
 <div class="table-responsive-sm" style="overflow-x:auto;">
 	<table class="table table-hover" style="width:1300px">
 		<thead>
@@ -94,22 +132,15 @@ function checkOnlyOne(element) {
 </div>
 		<c:if test="${sessionScope.nickname ne null}">
 		<div class="text-right">
-			<a href="form" class="btn btn-outline-primary">글쓰기</a>
+			<a href="form" class="btn btn-outline-primary boardBtn">글쓰기</a>
 		</div>
 		</c:if>
 	<div class="text-center">
-	<form id="form1" name="form1"  method="post">
+	
 		<!-- 페이징 호출2 -->
 	    	<jsp:include page="/WEB-INF/views/common/pagingforSubmit.jsp" />
-		<div class="form-group" style="margin-bottom:30px">
-			<input type="checkbox" name="searchType" onclick="checkOnlyOne(this)" value="FREE_TITLE" <c:if test="${fn:indexOf(searchVO.searchType, 'FREE_TITLE')!=-1}">checked="checked"</c:if>/>
-			<label class="chkselect" for="searchType1">제목</label>
-			<input type="checkbox" name="searchType" onclick="checkOnlyOne(this)" value="FREE_CONTENT" <c:if test="${fn:indexOf(searchVO.searchType, 'FREE_CONTENT')!=-1}">checked="checked"</c:if>/>
-			<label class="chkselect" for="searchType2">내용</label>
-			<input type="text" name="searchKeyword" style="width:200px;" maxlength="50" placeholder="검색" value='<c:out value="${searchVO.searchKeyword}"/>' onkeydown="if(event.keyCode == 13) { fn_formSubmit();}"><button  name="btn_search" style="border:none; color:white; background:#CA8FAB; height:33px;" class="btn_sch input-group-addon" type="button" onclick="fn_formSubmit()"><span class="fas fa-search"></span></button>
 		</div>
 	</form>
 	</div>
-</div>
 </body>
 </html>

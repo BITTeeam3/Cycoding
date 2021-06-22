@@ -1,9 +1,60 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="NoticeMapper" >
+<!-- 	목록 -->
 	<select id="list" resultType="com.cyco.notice.vo.NoticeVo">
-		SELECT * FROM notice
+		SELECT * 
+		FROM (SELECT ROWNUM no, n.* 
+				FROM (SELECT * FROM notice ORDER BY root, step DESC) n
+				ORDER BY no DESC) n 
+		WHERE no BETWEEN #{beginList} and #{endList}
 	</select>
 	
+<!-- 	전체갯수 -->
+	<select id="totalList" resultType="integer">
+	SELECT COUNT(*) FROM notice
+	</select>
+	
+<!-- 	등록 -->
+	<insert id="insert" parameterType="com.cyco.notice.vo.NoticeVo">
+		INSERT INTO notice (id, root, title, content, MEMBER_ID, filename, filepath)
+		VALUES (NT_SEQ.nextval, NT_SEQ.currval, #{title }, #{content }, #{MEMBER_ID }, #{filename, jdbcType=VARCHAR }, #{filepath, jdbcType=VARCHAR}) 
+	</insert>
+<!-- 	조회 -->
+	<select id="detail" resultType="com.cyco.notice.vo.NoticeVo">
+		SELECT n.*,
+		(SELECT MEMBER_NICKNAME FROM member m WHERE m.MEMBER_ID = n.MEMBER_ID) name 
+		FROM notice n 
+		WHERE id=#{id }
+	</select>
+	<!-- jdbcType=VARCHAR 속성을 넣으면 null값이 허용된다. -->
+<!-- 	조회수 -->
+	<update id="read">
+		UPDATE notice 
+		SET VIEWS = VIEWS + 1 
+		WHERE id=#{id}
+	</update>
+<!-- 	삭제 -->
+	<delete id="delete">
+		DELETE FROM notice WHERE id=#{id }
+	</delete>
+	
+	<update id="update">
+		UPDATE notice set title = #{title} , content = #{content}, filename = #{filename, jdbcType=VARCHAR}, filepath = #{filepath, jdbcType=VARCHAR}
+		WHERE id = #{id}
+	</update>
+	
+	<insert id="reply_insert">
+	<!-- 원글의 step보다 더 큰 step을 가진 글이 있다면 그 글들의 step을 먼저 +1 한다. -->
+		<![CDATA[
+			{CALL DECLARE BEGIN
+				UPDATE notice SET step = step + 1
+				WHERE root = #{root } AND step > #{step };
+				
+				INSERT INTO notice (id, root, title, content , MEMBER_ID, step, dept, filename, filepath)
+				VALUES (NT_SEQ.NEXTVAL, #{root }, #{title }, #{content }, #{MEMBER_ID }, #{step } + 1, #{dept } + 1, #{filename, jdbcType=VARCHAR }, #{filepath, jdbcType=VARCHAR });
+			END}
+		]]>
+	</insert>
 	
 </mapper>

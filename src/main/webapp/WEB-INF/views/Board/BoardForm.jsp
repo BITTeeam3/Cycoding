@@ -26,6 +26,15 @@ textarea{
 	resize: none;
 	overflow-x:auto;
 }
+
+.boardBtn {
+	font-weight: 300 !important;
+    font-size: 14px !important;
+    border-radius: 3px !important;
+    padding: 7px !important;
+    margin-top: 20px !important;
+    margin-bottom: 20px !important;
+}
 </style>
 <script>
 // 글쓰기 유효성검사
@@ -151,8 +160,8 @@ function previewImage(targetObj, View_area) {
 		</div>
 		<br/>
 		<div class="text-right" style="margin-bottom:30px">			 
-			<a href="#" onclick="fn_formSubmit()" class="btn btn-outline-primary">등록</a>
-			<a href="list" class="btn btn-outline-black">취소</a>
+			<a href="#" onclick="fn_formSubmit()" class="btn btn-outline-primary boardBtn">등록</a>
+			<a href="list" class="btn btn-outline-black boardBtn">취소</a>
 		</div>
 	</form>	
 </div>
