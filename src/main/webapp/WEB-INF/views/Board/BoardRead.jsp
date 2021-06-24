@@ -14,11 +14,11 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<title>CYCO 커뮤니티</title>
+<title>CYCO COMMUNITY</title>
 <style type="text/css">
 .fa-plus{color:#CA8FAB;}
 .section-header{
-	background-image: url("../assets/img/board/read.jpg");
+	background-image: url("../assets/img/board/detail.jpg");
 	background-repeat: no-repeat;
     background-size: cover;
     background-size: 100%;
@@ -45,9 +45,9 @@ header{
 	background-color: #FFFFFF;
 }
 
-.boardContent {
-	border: none;
-    background-color: #fff;
+.form-control {
+	border: none !important;
+    background-color: white !important;
 }
 
 .boardBtn {
@@ -346,11 +346,11 @@ function fn_replyReplySave(){
 			<div>
 					<span><c:out value="${boardInfo.MEMBER_NICKNAME}"/></span>&nbsp; | &nbsp;<span><fmt:formatDate value="${boardInfo.FREE_DATE }" pattern="yyyy.MM.dd hh:mm:ss" /></span>
 			</div>
-			<div class="text-right">		
+			<div class="text-right">
 					<span>조회&nbsp;<c:out value="${boardInfo.FREE_VIEWS}"/></span><br/>
 			</div>			
 		</div>
-	</header>			
+	</header>
 	<hr/>
 	<div class="form-group">
 		<textarea class="form-control boardContent" cols="120" rows="15" readonly="readonly" disabled><c:out value="${boardInfo.FREE_CONTENT}" escapeXml="false"/></textarea>
@@ -359,9 +359,11 @@ function fn_replyReplySave(){
 	<div class="form-group" style="margin-bottom:10px">
 			<label for="fileno">첨부파일</label>
 			<c:if test="${sessionScope.nickname ne null}">
-						<c:forEach var="listview" items="${listview}" varStatus="status">	
+						<c:forEach var="listview" items="${listview}" varStatus="status">
+						<c:if test="${!empty listview.filename }">	
             				<a class="form-control" href="fileDownload?filename=<c:out value="${listview.filename}"/>&downname=<c:out value="${listview.realname }"/>"> 							 
- 							<c:out value="${listview.filename}"/></a><%-- <c:out value="${listview.size2String()}"/> --%>
+ 							<c:out value="${listview.filename}"/>&nbsp;<i class="fas fa-download font-img"></i></a><%-- <c:out value="${listview.size2String()}"/> --%>
+ 						</c:if>
 						</c:forEach><br/>
 		</c:if>				
 	</div>			
@@ -385,7 +387,7 @@ function fn_replyReplySave(){
 		</c:if>
 		<c:forEach var="replylist" items="${replylist}" varStatus="status">
 			<div class="form-group" style="margin-top: 5px; position: relative; background:transparent; clear:both; display:block;
-					margin-left: <c:out value="${20*replylist.DEPT}"/>px;">
+					padding-left: <c:out value="${20*replylist.DEPT}"/>px;">
 					<c:choose>
 					<c:when test="${replylist.DEPT eq '0'}">
 					<div style="float:left; width:132px; margin-left:10px; margin-right:20px; margin-top:3px;">
@@ -397,7 +399,7 @@ function fn_replyReplySave(){
 					 </c:when>
 					 <c:otherwise>
 					<div style="float:left; width:132px; margin-left:10px; margin-right:20px; margin-top:3px;">
-						<img alt="replyIcon" src="../assets/img/board/reply.png" width="10" height="10">&nbsp;<c:out value="${replylist.MEMBER_NICKNAME}"/> 
+						<img alt="replyIcon" src="../assets/img/board/re.png" width="10" height="10">&nbsp;<c:out value="${replylist.MEMBER_NICKNAME}"/> 
 					</div> 
 					 <div id="reply<c:out value="${replylist.REPLY_ID}"/>" style="float:left; margin-top:3px;">
 					<c:out value="${replylist.REPLY_CONTENT}"/>
@@ -454,10 +456,10 @@ function fn_replyReplySave(){
 	<c:if test="${sessionScope.nickname eq boardInfo.MEMBER_NICKNAME}">
 			<a href="form?FREE_ID=<c:out value="${boardInfo.FREE_ID}"/>" class="btn btn-outline-primary boardBtn">수정</a>
 	        <a href="delete?FREE_ID=<c:out value="${boardInfo.FREE_ID}"/>" class="btn btn-outline-black boardBtn">삭제</a>
-	        <a href="list" class="btn btn-outline-black boardBtn">취소</a>
+	        <a href="list" class="btn btn-outline-black boardBtn">목록</a>
 	 </c:if>
 	 <c:if test="${sessionScope.nickname ne boardInfo.MEMBER_NICKNAME}">
-			<a href="list" class="btn btn-outline-black boardBtn">취소</a>
+			<a href="list" class="btn btn-outline-black boardBtn">목록</a>
 	</c:if>		
 </div>
 </body>

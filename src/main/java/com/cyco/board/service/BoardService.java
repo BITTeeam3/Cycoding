@@ -25,7 +25,7 @@ public class BoardService {
 	@Autowired
 	private DataSourceTransactionManager txManager;
 	
-//	게시글 전체데이터갯수 구하기
+//	게시글 전체데이터갯수 구하기	
 	public Integer selectBoardCount(SearchVO param) throws Exception {
 		return sqlSession.selectOne("selectBoardCount", param);
     }

@@ -13,10 +13,10 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<title>CYCO 커뮤니티</title>
+<title>CYCO COMMUNITY</title>
 <style type="text/css">
 .section-header{
-	background-image: url("../assets/img/board/form.jpg");
+	background-image: url("../assets/img/board/write.jpg");
 	background-repeat: no-repeat;
     background-size: cover;
     background-size: 100%;
@@ -34,6 +34,10 @@ textarea{
     padding: 7px !important;
     margin-top: 20px !important;
     margin-bottom: 20px !important;
+}
+
+.form-control {
+    background-color: white !important;
 }
 </style>
 <script>
@@ -128,6 +132,99 @@ function previewImage(targetObj, View_area) {
 	}
 }
 
+//제목 Byte 수 체크 제한
+function fnChkByte(obj, maxByte)
+{
+    var str = obj.value;
+    var str_len = str.length;
+
+
+    var rbyte = 0;
+    var rlen = 0;
+    var one_char = "";
+    var str2 = "";
+
+
+    for(var i=0; i<str_len; i++)
+    {
+        one_char = str.charAt(i);
+        if(escape(one_char).length > 4)
+        {
+            rbyte += 2;                                         //한글2Byte
+        }
+        else
+        {
+            rbyte++;                                            //영문 등 나머지 1Byte
+        }
+
+
+        if(rbyte <= maxByte)
+        {
+            rlen = i+1;                                          //return할 문자열 갯수
+        }
+     }
+
+
+     if(rbyte > maxByte)
+     {
+  // alert("한글 "+(maxByte/2)+"자 / 영문 "+maxByte+"자를 초과 입력할 수 없습니다.");
+  alert("제목은 최대 " + maxByte + "byte를 초과할 수 없습니다.")
+  str2 = str.substr(0,rlen);                                  //문자열 자르기
+  obj.value = str2;
+  fnChkByte(obj, maxByte);
+     }
+     else
+     {
+        document.getElementById('byteInfo').innerText = rbyte;
+     }
+}
+
+//내용 Byte 수 체크 제한
+function fnChkByte1(obj, maxByte)
+{
+    var str = obj.value;
+    var str_len = str.length;
+
+
+    var rbyte = 0;
+    var rlen = 0;
+    var one_char = "";
+    var str2 = "";
+
+
+    for(var i=0; i<str_len; i++)
+    {
+        one_char = str.charAt(i);
+        if(escape(one_char).length > 4)
+        {
+            rbyte += 2;                                         //한글2Byte
+        }
+        else
+        {
+            rbyte++;                                            //영문 등 나머지 1Byte
+        }
+
+
+        if(rbyte <= maxByte)
+        {
+            rlen = i+1;                                          //return할 문자열 갯수
+        }
+     }
+
+
+     if(rbyte > maxByte)
+     {
+  // alert("한글 "+(maxByte/2)+"자 / 영문 "+maxByte+"자를 초과 입력할 수 없습니다.");
+  alert("내용은 최대 " + maxByte + "byte를 초과할 수 없습니다.")
+  str2 = str.substr(0,rlen);                                  //문자열 자르기
+  obj.value = str2;
+  fnChkByte(obj, maxByte);
+     }
+     else
+     {
+        document.getElementById('byteInfo1').innerText = rbyte;
+     }
+}
 </script>
 </head>
 <jsp:include page="../include/header.jsp"></jsp:include>
@@ -140,12 +237,14 @@ function previewImage(targetObj, View_area) {
 		<input type="hidden" name="FREE_ID" value="<c:out value="${boardInfo.FREE_ID}"/>">
 		<div class="form-group">
 			<label for="FREE_TITLE">제목</label>
-			<input type="text" id="FREE_TITLE" name="FREE_TITLE" class="form-control" placeholder="제목을 입력해 주세요." pattern=".{1,250}" maxlength="250" value="<c:out value="${boardInfo.FREE_TITLE}"/>">
+			<input type="text" id="FREE_TITLE" name="FREE_TITLE" class="form-control" placeholder="제목을 입력해 주세요." pattern=".{1,250}" maxlength="250" onKeyUp="javascript:fnChkByte(this,'80')" value="<c:out value="${boardInfo.FREE_TITLE}"/>">
+			<span id="byteInfo">0</span>/ 80byte
 		</div>
 		<br/>
 		<div class="form-group">
 			<label for="FREE_CONTENT">내용</label>
-			<textarea id="FREE_CONTENT" name="FREE_CONTENT" class="form-control" placeholder="내용을 입력해 주세요." rows="15" cols="120"><c:out value="${boardInfo.FREE_CONTENT}"/></textarea>
+			<textarea id="FREE_CONTENT" name="FREE_CONTENT"  onKeyUp="javascript:fnChkByte1(this,'2500')" class="form-control" placeholder="내용을 입력해 주세요." rows="15" cols="120"><c:out value="${boardInfo.FREE_CONTENT}"/></textarea>
+			<span id="byteInfo1">0</span>/ 2500byte
 		</div>
 		<br/>	
 		<div class="form-group">

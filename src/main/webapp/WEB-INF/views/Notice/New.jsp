@@ -1,10 +1,19 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%
+// 	양식 다시 제출 방지
+	response.setHeader("Cache-Control","no-store"); 
+	response.setHeader("Pragma","no-cache"); 
+	response.setDateHeader("Expires",0);
+	if (request.getProtocol().equals("HTTP/1.1")){ 
+		response.setHeader("Cache-Control", "no-cache");
+	}
+%>
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>CYCO NOTICE</title>
 <style type="text/css">
 /* 파일 첨부 */
 .file-img { 
@@ -14,6 +23,66 @@
 #attach-file, #delete-file { 
 	display:none; 
 }
+
+select { 
+	height: 32px !important;
+}
+
+img {
+	vertical-align: middle;	/* 세로축 가운데 정렬 */
+}
+
+a.btn-fill, a.btn-empty {
+	text-align: center;
+	padding: 3px 10px;
+	border:1px solid #3367d6;
+	border-radius: 3px;
+	box-shadow: 2px 2px 3px #022d72;
+	/* 오른쪽, 아래쪽, 번진 정도 */
+}
+
+a.btn-fill { 
+	background-color: #3367d6;
+	color: #fff;
+}
+
+a.btn-empty { 
+	background-color: #fff;
+	color: #3367d6
+}
+
+a.btn-fill-s, a.btn-empty-s {
+	text-align: center;
+	padding: 1px 10px;
+	border:1px solid #c4dafc
+	border-radius: 3px;
+	box-shadow: 2px 2px 3px #022d72;
+	color: #0000cd;
+	font-size: 13px;
+}
+
+a.btn-fill-s { 
+	background-color: #bacdfa;
+}
+
+a.btn-empty-s { 
+	background-color: #fff;
+}
+
+.btnSet a:not(:first-child) {
+	margin-left: 3px;
+}
+
+input[type=radio] {
+	width: 18px;
+	margin: 0 5px 3px;
+	vertical-align: middle;
+}
+
+input[name=title] { width:calc(100% - 14px) }
+textarea[name=content] { width:calc(100% - 6px); height: 150px; resize: none;}
+
+.font-img { cursor: pointer; }
 
 </style>
 </head>
@@ -28,10 +97,7 @@
 			<td><input type="text" name="title" class="need"/></td>
 		</tr>
 		<tr>
-			<th>작성자</th>
-			<td>${sessionScope.MEMBER_NICKNAME}</td>
 			<td><input type="hidden" name="MEMBER_ID" value="${sessionScope.member_id }"></td>
-			
 		</tr>
 		<tr>
 			<th>내용</th>

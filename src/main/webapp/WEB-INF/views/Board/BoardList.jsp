@@ -16,19 +16,22 @@
 <head>
 <meta charset="UTF-8">
 <meta http-equiv="Content-Type" content="width=device-width; initial-scale=1; text/html; charset=utf-8" />
-<title>CYCO 커뮤니티</title>
+<title>CYCO COMMUNITY</title>
 <style type="text/css">
+
 table {
 	font-size: 14px;
 }
+
 .section-header{
-	background-image: url("../assets/img/board/list.jpg");
+	background-image: url("../assets/img/board/community.jpg");
 	background-repeat: no-repeat;
     background-size: cover;
     background-size: 100%;
     background-position: center;
     margin-bottom: 50px;
 }
+
 .chkselect{
 	font-size: 16px;
     font-weight: 500;
@@ -86,7 +89,7 @@ function checkOnlyOne(element) {
 <div class="container">
 <div class="section-header"></div>
 <form id="form1" name="form1"  method="post">
-<div class="form-group" style="margin-bottom:30px;">
+<div class="form-group" style="margin-bottom:30.5px; margin-left:37px">
 			<input type="checkbox" name="searchType" onclick="checkOnlyOne(this)" value="FREE_TITLE" <c:if test="${fn:indexOf(searchVO.searchType, 'FREE_TITLE')!=-1}">checked="checked"</c:if>/>
 			<label class="chkselect" for="searchType1">제목</label>
 			<input type="checkbox" name="searchType" onclick="checkOnlyOne(this)" value="FREE_CONTENT" <c:if test="${fn:indexOf(searchVO.searchType, 'FREE_CONTENT')!=-1}">checked="checked"</c:if>/>
@@ -110,19 +113,19 @@ function checkOnlyOne(element) {
 					<c:param name="FREE_ID" value="${listview.FREE_ID}" />
 				</c:url>		
 				<tr>
-					<td align="center">
+					<td scope="row" align="center">
 						<c:out value="${searchVO.totRow-((searchVO.page-1)*searchVO.displayRowCount + status.index)}"/>
 					</td>
-					<td>
+					<td scope="row">
 						<a href="${link}"><c:out value="${listview.getShortTitle(50)}"/></a>
 					</td>
-					<td align="center">
+					<td  scope="row"align="center">
 						<c:out value="${listview.MEMBER_NICKNAME}"/>
 					</td>
-					<td align="center">
+					<td scope="row" align="center">
 						<fmt:formatDate value="${listview.FREE_DATE }" pattern="MM.dd" />
 					 </td>
-					<td align="center">
+					<td scope="row" align="center">
 						<c:out value="${listview.FREE_VIEWS}"/>
 					</td>
 				</tr>
@@ -132,11 +135,10 @@ function checkOnlyOne(element) {
 </div>
 		<c:if test="${sessionScope.nickname ne null}">
 		<div class="text-right">
-			<a href="form" class="btn btn-outline-primary boardBtn">글쓰기</a>
+			<a href="form" style="margin-right:25px" class="btn btn-outline-primary boardBtn">글쓰기</a>
 		</div>
 		</c:if>
 	<div class="text-center">
-	
 		<!-- 페이징 호출2 -->
 	    	<jsp:include page="/WEB-INF/views/common/pagingforSubmit.jsp" />
 		</div>

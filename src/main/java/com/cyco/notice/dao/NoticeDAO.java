@@ -45,7 +45,7 @@ public class NoticeDAO implements NoticeService {
 	}
 	@Override
 	public NoticePage notice_list(NoticePage page) {
-		page.setTotalList((Integer) sql.selectOne("NoticeMapper.totalList"));
+		page.setTotalList((Integer) sql.selectOne("NoticeMapper.totalList", page));
 		page.setList(sql.selectList("NoticeMapper.list", page));
 		
 		return page;

@@ -26,6 +26,7 @@ public class NoticeVo {
 //	파일 경로
 	private String filepath;
 	
+	private String MEMBER_NICKNAME;
 	private String name;
 //	작성일
 	private Date writedate;
@@ -38,7 +39,7 @@ public class NoticeVo {
 //	참조글
 	private int root;
 
-//	게시글 짜르기
+//	게시글 긴 제목 짜르기
 	public String getShortTitle(Integer len){
         return utiletc.getShortString(title, len);
     }

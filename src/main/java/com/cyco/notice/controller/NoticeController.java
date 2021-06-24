@@ -1,10 +1,8 @@
 package com.cyco.notice.controller;
 
 import java.io.File;
-
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -12,7 +10,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
-
 import com.cyco.notice.service.CommonService;
 import com.cyco.notice.service.NoticeServiceImpl;
 import com.cyco.notice.vo.NoticePage;
@@ -31,10 +28,12 @@ public class NoticeController {
 	
 	//공지사항 목록화면 요청
 	@RequestMapping(value = "list")
-	public String list(Model model, HttpSession session, @RequestParam(defaultValue = "1") int curPage) {
+	public String list(Model model, HttpSession session, @RequestParam(defaultValue = "1") int curPage, String search, String keyword) {
 		session.setAttribute("category", "no");
 		//DB에서 공지 글 목록을 조회해서 목록 화면에 출력
 		page.setCurPage(curPage);
+		page.setSearch(search);
+		page.setKeyword(keyword);
 		model.addAttribute("page", service.notice_list(page));
 		
 		return "Notice/List";
@@ -51,16 +50,13 @@ public class NoticeController {
 		@RequestMapping(value="insert")
 		public String insert(MultipartFile file, NoticeVo vo, HttpSession session) {
 			//첨부한 파일을 서버 시스템에 업로드하는 처리
-			System.out.println("notice insert");
 			if( !file.isEmpty() ) {
 				vo.setFilepath(common.upload("notice", file, session));
 				vo.setFilename(file.getOriginalFilename());
 			}
-			System.out.println("notice insert2");
 			//화면에서 입력한 정보를 DB에 저장한 후
 			service.notice_insert(vo);
 			//목록 화면으로 연결
-			System.out.println("notice insert3");
 			return "redirect:list";
 	}
 	
@@ -73,6 +69,8 @@ public class NoticeController {
 			//선택한 공지글 정보를 DB에서 조회해와 상세 화면에 출력
 			model.addAttribute("vo", service.notice_detail(id));
 			model.addAttribute("crlf", "\r\n");
+			model.addAttribute("page", page);
+			
 			
 			return "Notice/Detail";
 		} //detail()
@@ -110,7 +108,7 @@ public class NoticeController {
 		} //modify()
 		
 		//공지글 수정 처리 요청
-		@RequestMapping("/update.no")
+		@RequestMapping("/update")
 		public String update(NoticeVo vo, MultipartFile file, HttpSession session, String attach) {
 			//원래 공지글의 첨부 파일 관련 정보를 조회
 			NoticeVo notice = service.notice_detail(vo.getId());
@@ -141,7 +139,6 @@ public class NoticeController {
 					vo.setFilename(notice.getFilename());
 					vo.setFilepath(notice.getFilepath());
 				}
-				
 			}
 			
 			//화면에서 변경한 정보를 DB에 저장한 후 상세 화면으로 연결

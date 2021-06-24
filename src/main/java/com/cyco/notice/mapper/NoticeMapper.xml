@@ -1,18 +1,35 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="NoticeMapper" >
+	<sql id="search_where">
+		<if test="search == 'title' or search == 'content'">
+			WHERE ${search } LIKE '%' || #{keyword } || '%'
+		</if>
+		<if test="search == 'writer'">
+			WHERE <include refid="search_writer" />
+		</if>
+		<if test="search == 'all'">
+			WHERE title LIKE '%' || #{keyword } || '%'
+			OR content LIKE '%' || #{keyword } || '%'
+			OR <include refid="search_writer" />
+		</if>
+	</sql>
+	
+	<sql id="search_writer">
+		MEMBER_ID IN (SELECT MEMBER_ID FROM member WHERE MEMBER_NICKNAME LIKE '%' || #{keyword } || '%')
+	</sql>
 <!-- 	목록 -->
 	<select id="list" resultType="com.cyco.notice.vo.NoticeVo">
 		SELECT * 
-		FROM (SELECT ROWNUM no, n.* 
-				FROM (SELECT * FROM notice ORDER BY root, step DESC) n
-				ORDER BY no DESC) n 
+		FROM (SELECT ROWNUM no, n.*,	(SELECT MEMBER_NICKNAME FROM member m WHERE m.MEMBER_ID = n.MEMBER_ID) name
+					FROM 	(SELECT * FROM notice n <include refid="search_where" /> ORDER BY root, step DESC) n
+					ORDER BY no DESC) n 
 		WHERE no BETWEEN #{beginList} and #{endList}
 	</select>
 	
 <!-- 	전체갯수 -->
 	<select id="totalList" resultType="integer">
-	SELECT COUNT(*) FROM notice
+	SELECT COUNT(*) FROM notice <include refid="search_where" />
 	</select>
 	
 <!-- 	등록 -->
@@ -22,8 +39,7 @@
 	</insert>
 <!-- 	조회 -->
 	<select id="detail" resultType="com.cyco.notice.vo.NoticeVo">
-		SELECT n.*,
-		(SELECT MEMBER_NICKNAME FROM member m WHERE m.MEMBER_ID = n.MEMBER_ID) name 
+		SELECT n.*, (SELECT MEMBER_NICKNAME FROM member m WHERE m.MEMBER_ID = n.MEMBER_ID) name 
 		FROM notice n 
 		WHERE id=#{id }
 	</select>
@@ -38,18 +54,18 @@
 	<delete id="delete">
 		DELETE FROM notice WHERE id=#{id }
 	</delete>
-	
+<!-- 	등록 -->
 	<update id="update">
 		UPDATE notice set title = #{title} , content = #{content}, filename = #{filename, jdbcType=VARCHAR}, filepath = #{filepath, jdbcType=VARCHAR}
 		WHERE id = #{id}
 	</update>
-	
+<!-- 	답글 -->
 	<insert id="reply_insert">
 	<!-- 원글의 step보다 더 큰 step을 가진 글이 있다면 그 글들의 step을 먼저 +1 한다. -->
 		<![CDATA[
 			{CALL DECLARE BEGIN
-				UPDATE notice SET step = step + 1
-				WHERE root = #{root } AND step > #{step };
+				UPDATE notice SET step = step + 1, dept = dept + 1
+				WHERE root = #{root } AND step > #{step } AND dept > #{dept};
 				
 				INSERT INTO notice (id, root, title, content , MEMBER_ID, step, dept, filename, filepath)
 				VALUES (NT_SEQ.NEXTVAL, #{root }, #{title }, #{content }, #{MEMBER_ID }, #{step } + 1, #{dept } + 1, #{filename, jdbcType=VARCHAR }, #{filepath, jdbcType=VARCHAR });
