@@ -117,13 +117,6 @@
 								href="${pageContext.request.contextPath}/board/list"
 								class="nav-link"> COMMUNITY </a></li>
 
-							<li class="nav-item dropdown"><a
-								href="${pageContext.request.contextPath}/notice/list"
-								class="nav-link"> NOTICE </a></li>
-								
-							<li class="nav-item dropdown"><a
-								href="${pageContext.request.contextPath}/qna/list"
-								class="nav-link"> QNA </a></li>
 						</ul>
 
 						<!-- Header Right -->
